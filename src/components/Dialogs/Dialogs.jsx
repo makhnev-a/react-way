@@ -2,15 +2,21 @@ import React from "react";
 import style from './Dialogs.module.css';
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
+import {updateNewMessageBodyCreater, sendMessageCreater} from '../../redux/state';
 
 const Dialogs = (props) => {
-    let dialogsItems = props.state.dialogs.map(dialog => <DialogItem name={dialog.name} id={dialog.id}/>);
-    let messagesItems = props.state.messages.map(message => <Message message={message.message}/>);
-    let newMessageElement = React.createRef();
+    let state = props.store.getState().dialogsPage;
+    let dialogsItems = state.dialogs.map(dialog => <DialogItem name={dialog.name} id={dialog.id}/>);
+    let messagesItems = state.messages.map(message => <Message message={message.message}/>);
+    let newMessageBody = state.newMessageText;
 
-    let addNewMessage = () => {
-        let text = newMessageElement.current.value;
-        alert(text);
+    let onSendMessageCLick = () => {
+        props.store.dispatch(sendMessageCreater());
+    };
+
+    let onNewMessageChange = (event) => {
+        let body = event.target.value;
+        props.store.dispatch(updateNewMessageBodyCreater(body));
     };
 
     return (
@@ -21,12 +27,15 @@ const Dialogs = (props) => {
                 </div>
 
                 <div className={style.messages}>
-                    {messagesItems}
+                    <div>{messagesItems}</div>
                     <div>
-                        <textarea ref={newMessageElement}>
-                        </textarea>
+                        <textarea
+                            value={newMessageBody}
+                            placeholder={'Enter you message'}
+                            onChange={onNewMessageChange}
+                        />
                         <br/>
-                        <button onClick={addNewMessage}>Add message</button>
+                        <button onClick={onSendMessageCLick}>Add message</button>
                     </div>
                 </div>
             </div>

@@ -18,7 +18,7 @@ const App = (props) => {
 
     let dialogsPage = () =>
         <Dialogs
-            state={props.state.dialogsPage}
+            store={props.store}
         />;
 
     return (
