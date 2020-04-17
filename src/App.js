@@ -13,8 +13,7 @@ const App = (props) => {
     let profilePage = () =>
         <Profile
             profilePage={props.state.profilePage}
-            addPost={props.addPost}
-            updateNewPostText={props.updateNewPostText}
+            dispatch={props.dispatch}
         />;
 
     let dialogsPage = () =>
