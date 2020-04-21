@@ -1,7 +1,7 @@
 import React from "react";
 import s from './MyPosts.module.css';
 import Post from "./Post/Post";
-import {addPostActionCreater, updatePostTextActionCreater} from '../../../redux/state';
+import {addPostActionCreater, updatePostTextActionCreater} from '../../../redux/profile.reducer';
 
 const MyPosts = (props) => {
     let postsItems = props.posts
