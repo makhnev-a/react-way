@@ -12,14 +12,10 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 const App = (props) => {
     let profilePage = () =>
-        <Profile
-            store={props.store}
-        />;
+        <Profile/>;
 
     let dialogsPage = () =>
-        <DialogsContainer
-            store={props.store}
-        />;
+        <DialogsContainer/>;
 
     return (
         <div className='app-wrapper'>
