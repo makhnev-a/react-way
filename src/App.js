@@ -8,16 +8,16 @@ import {Route} from 'react-router-dom';
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
+import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 const App = (props) => {
     let profilePage = () =>
         <Profile
-            profilePage={props.state.profilePage}
-            dispatch={props.dispatch}
+            store={props.store}
         />;
 
     let dialogsPage = () =>
-        <Dialogs
+        <DialogsContainer
             store={props.store}
         />;
 
