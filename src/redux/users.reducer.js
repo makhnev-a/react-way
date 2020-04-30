@@ -3,29 +3,7 @@ const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 
 const initialState = {
-    users: [
-        {
-            id: 1,
-            followed: false,
-            fullName: 'Dmitriy',
-            status: 'I am a boss',
-            location: {city: 'Minsk', country: 'Belarus'}
-        },
-        {
-            id: 2,
-            followed: true,
-            fullName: 'Andrew',
-            status: 'I am a boss too1',
-            location: {city: 'Moscow', country: 'Russia'}
-        },
-        {
-            id: 3,
-            followed: false,
-            fullName: 'Sasha',
-            status: 'I am a boss too2',
-            location: {city: 'Kiev', country: 'Ukraine'}
-        },
-    ]
+    users: []
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -50,7 +28,7 @@ const usersReducer = (state = initialState, action) => {
             })
         };
     } else if (action.type === SET_USERS) {
-        return {...state, users: [...state.users, action.users]}
+        return {...state, users: [...state.users, ...action.users]}
     } else {
         return state;
     }
