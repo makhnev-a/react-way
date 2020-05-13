@@ -5,10 +5,21 @@ import * as axios from "axios";
 
 class Users extends React.Component {
     componentDidMount() {
-        axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response) => {
-            this.props.setUsers(response.data.items);
-        });
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
+            .then((response) => {
+                this.props.setUsers(response.data.items);
+                this.props.setTotalUsersCount();
+            });
     }
+
+    onPageChanged = (pageNumber) => {
+        this.props.setCurrentPage(pageNumber);
+
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
+            .then((response) => {
+                this.props.setUsers(response.data.items);
+            });
+    };
 
     render() {
         let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
@@ -18,15 +29,17 @@ class Users extends React.Component {
             pages.push(i)
         }
 
-        console.log(pages);
-
         return (
             <div>
                 <div>
                     {
                         pages.map((page) => {
                             return <span
-                                className={this.props.currentPage === page && styles.selectedPage}>{page}</span>;
+                                className={this.props.currentPage === page && styles.selectedPage}
+                                onClick={(e) => {
+                                    this.onPageChanged(page)
+                                }}
+                            >{page}</span>;
                         })
                     }
                 </div>
