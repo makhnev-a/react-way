@@ -2,6 +2,7 @@ import React from "react";
 import styles from './users.module.css';
 import userPhoto from '../../assets/img/user.webp'
 import * as axios from "axios";
+import cn from 'classnames';
 
 class Users extends React.Component {
     componentDidMount() {
@@ -29,9 +30,6 @@ class Users extends React.Component {
             pages.push(i);
         }
 
-        let style = this.props.currentPage === 2 && styles.selectedPage;
-        console.log(this.props.currentPage, style);
-        console.log(this.props.currentPage);
         return (
             <div>
                 <div>
@@ -39,8 +37,8 @@ class Users extends React.Component {
                         pages.map((page, item) => {
                                 return (
                                     <span
-                                        key={item}
-                                        className={style}
+                                        key={`page-${item}`}
+                                        className={cn({[styles.selectedPage]: this.props.currentPage === page})}
                                         onClick={(e) => this.onPageChanged(page)}>
                                     {page}</span>
                                 );

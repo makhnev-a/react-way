@@ -35,7 +35,7 @@ const usersReducer = (state = initialState, action) => {
     } else if (action.type === SET_USERS) {
         return {...state, users: action.users}
     } else if (action.type === SET_CURRENT_PAGE) {
-        return {...state, currentPage: action.currentPage}
+        return {...state, currentPage: action.pageNumber}
     } else if (action.type === SET_TOTAL_USERS_COUNT) {
         return {...state, totalUsersCount: action.count}
     } else {
