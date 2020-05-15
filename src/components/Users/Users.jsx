@@ -1,54 +1,35 @@
 import React from "react";
-import styles from './users.module.css';
-import userPhoto from '../../assets/img/user.webp'
-import * as axios from "axios";
-import cn from 'classnames';
+import cn from "classnames";
+import styles from "./users.module.css";
+import userPhoto from "../../assets/img/user.webp";
 
-class Users extends React.Component {
-    componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-            .then((response) => {
-                this.props.setUsers(response.data.items);
-                this.props.setTotalUsersCount(response.data.totalCount);
-            });
+const Users = (props) => {
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+    let pages = [];
+
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i);
     }
 
-    onPageChanged = (pageNumber) => {
-        this.props.setCurrentPage(pageNumber);
-
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
-            .then((response) => {
-                this.props.setUsers(response.data.items);
-            });
-    };
-
-    render() {
-        let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
-        let pages = [];
-
-        for (let i = 1; i <= pagesCount; i++) {
-            pages.push(i);
-        }
-
-        return (
+    return (
+        <div>
             <div>
-                <div>
-                    {
-                        pages.map((page, item) => {
-                                return (
-                                    <span
-                                        key={`page-${item}`}
-                                        className={cn({[styles.selectedPage]: this.props.currentPage === page})}
-                                        onClick={(e) => this.onPageChanged(page)}>
-                                    {page}</span>
-                                );
-                            }
-                        )
-                    }
-                </div>
                 {
-                    this.props.users.map(u => {
-                        return <div key={u.id}>
+                    pages.map((page, item) => {
+                            return (
+                                <span
+                                    key={`page-${item}`}
+                                    className={cn({[styles.selectedPage]: props.currentPage === page})}
+                                    onClick={(e) => props.onPageChanged(page)}>
+                                    {page}</span>
+                            );
+                        }
+                    )
+                }
+            </div>
+            {
+                props.users.map(u => {
+                    return <div key={u.id}>
                     <span>
                         <div>
                             <img
@@ -61,15 +42,15 @@ class Users extends React.Component {
                             {
                                 u.followed
                                     ? <button onClick={() => {
-                                        this.props.unfollow(u.id)
+                                        props.unfollow(u.id)
                                     }}>unfollow</button>
                                     : <button onClick={() => {
-                                        this.props.follow(u.id)
+                                        props.follow(u.id)
                                     }}>follow</button>
                             }
                         </div>
                     </span>
-                            <span>
+                        <span>
                         <span>
                             <div>{u.name}</div>
                             <div>{u.status}</div>
@@ -79,12 +60,11 @@ class Users extends React.Component {
                             <div>{"u.location.city"}</div>
                         </span>
                     </span>
-                        </div>
-                    })
-                }
-            </div>
-        );
-    }
-}
+                    </div>
+                })
+            }
+        </div>
+    );
+};
 
 export default Users;
