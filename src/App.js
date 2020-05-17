@@ -30,7 +30,7 @@ const App = (props) => {
                     render={dialogsPage}
                 />
                 <Route
-                    path='/profile'
+                    path='/profile/:userId?'
                     render={profilePage}
                 />
                 <Route
