@@ -15,7 +15,14 @@ const ProfileInfo = (props) => {
             </div>
             <div className={styles.descriptionBlock}>
                 <img src={props.profile.photos.large} alt=""/>
-                ava + description
+                <p>{props.profile.aboutMe}</p>
+                <p>Ищу работу: {props.profile.lookingForAJob ? 'Да' : 'Нет'}</p>
+                <ul>
+                    <li>Мой VK: <a href={props.profile.contacts.vk}>{props.profile.contacts.vk}</a></li>
+                    <li>Мой twitter: <a href={props.profile.contacts.twitter}>{props.profile.contacts.twitter}</a></li>
+                    <li>Мой instagram: <a href={props.profile.contacts.instagram}>{props.profile.contacts.instagram}</a>
+                    </li>
+                </ul>
             </div>
         </div>
     );
