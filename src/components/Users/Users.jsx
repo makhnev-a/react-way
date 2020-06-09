@@ -45,8 +45,8 @@ const Users = (props) => {
                         <div>
                             {
                                 u.followed
-                                    ? <button disabled={props.followingInProgress} onClick={() => {
-                                        props.toogleFollowingProgress(true);
+                                    ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
+                                        props.toogleFollowingProgress(true, u.id);
                                         axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
                                             withCredentials: true,
                                             headers: {
@@ -57,11 +57,11 @@ const Users = (props) => {
                                                 if (response.data.resultCode === 0) {
                                                     props.unfollow(u.id)
                                                 }
-                                                props.toogleFollowingProgress(false);
+                                                props.toogleFollowingProgress(false, u.id);
                                             });
                                     }}>unfollow</button>
-                                    : <button disabled={props.followingInProgress} onClick={() => {
-                                        props.toogleFollowingProgress(true);
+                                    : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
+                                        props.toogleFollowingProgress(true, u.id);
                                         axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
                                             withCredentials: true,
                                             headers: {
@@ -72,7 +72,7 @@ const Users = (props) => {
                                                 if (response.data.resultCode === 0) {
                                                     props.follow(u.id);
                                                 }
-                                                props.toogleFollowingProgress(false);
+                                                props.toogleFollowingProgress(false, u.id);
                                             });
                                     }}>follow</button>
                             }
