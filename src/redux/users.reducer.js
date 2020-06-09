@@ -1,3 +1,5 @@
+import {usersApi} from "../api/api";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
@@ -66,3 +68,15 @@ export const setCurrentPage = (pageNumber) => ({type: SET_CURRENT_PAGE, pageNumb
 export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount});
 export const toggleFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching});
 export const toogleFollowingProgress = (isFetching, userId) => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId});
+
+export const getUsersThunkCreator = (currentPage, pageSize) => {
+    return (dispatch) => {
+        dispatch(toggleFetching(true));
+        usersApi.getUsers(currentPage, pageSize).then((data) => {
+            dispatch(toggleFetching(false));
+            dispatch(setUsers(data.items));
+            // dispatch(setTotalUsersCount(data.totalCount));
+            dispatch(setTotalUsersCount(50));
+        });
+    };
+};
