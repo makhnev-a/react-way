@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useDebugValue} from "react";
 import cn from "classnames";
 import styles from "./users.module.css";
 import userPhoto from "../../assets/img/user.webp";
@@ -45,7 +45,8 @@ const Users = (props) => {
                         <div>
                             {
                                 u.followed
-                                    ? <button onClick={() => {
+                                    ? <button disabled={props.followingInProgress} onClick={() => {
+                                        props.toogleFollowingProgress(true);
                                         axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
                                             withCredentials: true,
                                             headers: {
@@ -56,9 +57,11 @@ const Users = (props) => {
                                                 if (response.data.resultCode === 0) {
                                                     props.unfollow(u.id)
                                                 }
+                                                props.toogleFollowingProgress(false);
                                             });
                                     }}>unfollow</button>
-                                    : <button onClick={() => {
+                                    : <button disabled={props.followingInProgress} onClick={() => {
+                                        props.toogleFollowingProgress(true);
                                         axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
                                             withCredentials: true,
                                             headers: {
@@ -69,6 +72,7 @@ const Users = (props) => {
                                                 if (response.data.resultCode === 0) {
                                                     props.follow(u.id);
                                                 }
+                                                props.toogleFollowingProgress(false);
                                             });
                                     }}>follow</button>
                             }
