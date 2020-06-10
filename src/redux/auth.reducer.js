@@ -1,3 +1,5 @@
+import {usersApi} from "../api/api";
+
 const SET_USER_DATA = 'SET_USER_DATA';
 
 const initialState = {
@@ -30,3 +32,14 @@ export const setAuthUserData = (userId, email, login) => ({
 });
 
 export default authReducer;
+
+export const getLoggin = () => {
+    return (dispatch) => {
+        usersApi.loggin().then((data) => {
+            if (data.resultCode === 0) {
+                let {id, email, login} = data.data;
+                dispatch(setAuthUserData(id, email, login));
+            }
+        });
+    };
+};

@@ -20,5 +20,9 @@ export const usersApi = {
     unfollow(userId) {
         return instance.delete(`follow/${userId}`)
             .then(response => response.data)
+    },
+    loggin() {
+        return instance.get(`auth/me`)
+            .then(response => response.data)
     }
 };
