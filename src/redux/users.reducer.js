@@ -84,8 +84,8 @@ export const getUsers = (currentPage, pageSize) => {
 export const follow = (userId) => {
     return (dispatch) => {
         dispatch(toogleFollowingProgress(true, userId));
-        usersApi.follow(userId).then((response) => {
-            if (response.data.resultCode === 0) {
+        usersApi.follow(userId).then((data) => {
+            if (data.resultCode === 0) {
                 dispatch(followSuccess(userId));
             }
             dispatch(toogleFollowingProgress(false, userId));
@@ -96,8 +96,8 @@ export const follow = (userId) => {
 export const unfollow = (userId) => {
     return (dispatch) => {
         dispatch(toogleFollowingProgress(true, userId));
-        usersApi.unfollow(userId).then((response) => {
-            if (response.data.resultCode === 0) {
+        usersApi.unfollow(userId).then((data) => {
+            if (data.resultCode === 0) {
                 dispatch(unfollowSuccess(userId));
             }
             dispatch(toogleFollowingProgress(false, userId));
