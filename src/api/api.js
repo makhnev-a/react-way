@@ -24,5 +24,10 @@ export const usersApi = {
     loggin() {
         return instance.get(`auth/me`)
             .then(response => response.data)
+    },
+    getProfile(userId) {
+        return instance.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
+            .then(response => response.data)
+
     }
 };
