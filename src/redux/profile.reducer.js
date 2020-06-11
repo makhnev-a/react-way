@@ -3,6 +3,7 @@ import {usersApi} from "../api/api";
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
+const SET_STATUS = 'SET_STATUS';
 
 const initialState = {
     posts: [
@@ -10,7 +11,8 @@ const initialState = {
         {id: 2, likeCount: 10, message: 'It\'s my first post!'}
     ],
     newPostText: 'it-kabzda.com',
-    profile: null
+    profile: null,
+    status: ''
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -25,7 +27,12 @@ const profileReducer = (state = initialState, action) => {
         case UPDATE_NEW_POST_TEXT:
             return {...state, newPostText: action.newText};
         case SET_USER_PROFILE:
-            return {...state, profile: action.profile}
+            return {...state, profile: action.profile};
+        case SET_STATUS:
+            return {
+                ...state,
+                status: action.status
+            };
         default:
             return state;
     }
@@ -47,10 +54,33 @@ export const setUserProfile = (profile) => ({
     profile
 });
 
+export const setStatus = (status) => ({
+    type: SET_STATUS,
+    status
+});
+
 export const getProfileUser = (userId) => {
     return (dispatch) => {
         usersApi.getProfile(userId).then((data) => {
             dispatch(setUserProfile(data));
+        });
+    };
+};
+
+export const getStatus = (userId) => {
+    return (dispatch) => {
+        usersApi.getStatus(userId).then((data) => {
+           dispatch(setStatus(data))
+        });
+    };
+};
+
+export const updateStatus = (status) => {
+    return (dispatch) => {
+        usersApi.updateStatus(status).then((data) => {
+            if (data.resultCode === 0) {
+                dispatch(setStatus(data))
+            }
         });
     };
 };
