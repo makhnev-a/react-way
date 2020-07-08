@@ -76,10 +76,11 @@ export const getStatus = (userId) => {
 };
 
 export const updateStatus = (status) => {
+    debugger
     return (dispatch) => {
         usersApi.updateStatus(status).then((data) => {
             if (data.resultCode === 0) {
-                dispatch(setStatus(data))
+                dispatch(setStatus(status))
             }
         });
     };
