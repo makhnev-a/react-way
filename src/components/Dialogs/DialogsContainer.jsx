@@ -15,8 +15,8 @@ let mapDispatchToProps = (dispatch) => {
         updateNewMessageBody: (body) => {
             dispatch(updateNewMessageBodyCreater(body));
         },
-        sendMessage: () => {
-            dispatch(sendMessageCreater());
+        sendMessage: (newMessageBody) => {
+            dispatch(sendMessageCreater(newMessageBody));
         }
     };
 };

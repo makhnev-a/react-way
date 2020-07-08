@@ -16,8 +16,7 @@ const initialState = {
         {id: 4, name: 'Sasha'},
         {id: 5, name: 'Viktor'},
         {id: 6, name: 'Valera'},
-    ],
-    newMessageText: ''
+    ]
 };
 
 const dialogsReducer = (state = initialState, action) => {
@@ -28,13 +27,13 @@ const dialogsReducer = (state = initialState, action) => {
             stateCopy.newMessageText = action.body;
             return stateCopy;
         case SEND_MESSAGE:
-            let body = state.newMessageText;
+            let body = action.newMessageBody;
 
             stateCopy = {
                 ...state,
-                newMessageText: '',
                 messages: [...state.messages, {id: 6, message: body}]
             };
+
             return stateCopy;
         default:
             return state;
@@ -43,7 +42,13 @@ const dialogsReducer = (state = initialState, action) => {
 
 export default dialogsReducer;
 
-export const sendMessageCreater = () => ({type: SEND_MESSAGE});
+export const sendMessageCreater = (newMessageBody) => {
+    debugger
+    return {
+        type: SEND_MESSAGE,
+        newMessageBody
+    };
+};
 
 export const updateNewMessageBodyCreater = (text) => ({
     type: UPDATE_NEW_MESSAGE_BODY,
