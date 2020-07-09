@@ -11,15 +11,6 @@ const Dialogs = (props) => {
     let messagesItems = state.messages.map(message => <Message message={message.message}/>);
     let newMessageBody = state.newMessageText;
 
-    let onSendMessageCLick = () => {
-        props.sendMessage();
-    };
-
-    let onNewMessageChange = (event) => {
-        let body = event.target.value;
-        props.updateNewMessageBody(body);
-    };
-
     let addNewMessage = (values) => {
         props.sendMessage(values.newMessageBody);
     };
