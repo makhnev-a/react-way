@@ -2,6 +2,8 @@ import React from "react";
 import {Field, reduxForm} from "redux-form";
 import {Input} from "../common/FormControls/FormControls";
 import {requiredField} from "../../utils/validators/validators";
+import {connect} from "react-redux";
+import {login} from "../../redux/auth.reducer";
 
 const LoginForm = (props) => {
     return (
@@ -9,7 +11,7 @@ const LoginForm = (props) => {
             <div>
                 <Field
                     component={Input}
-                    name={'login'}
+                    name={'email'}
                     placeholder={'Login'}
                     validate={[requiredField]}
                 />
@@ -20,6 +22,7 @@ const LoginForm = (props) => {
                     name={'password'}
                     placeholder={'Password'}
                     validate={[requiredField]}
+                    // type={'password'}
                 />
             </div>
             <div>
@@ -40,7 +43,7 @@ const LoginReduxForm = reduxForm({form: 'login'})(LoginForm);
 
 const Login = (props) => {
     const onSubmit = (formData) => {
-        console.log(formData);
+        props.login(formData.email, formData.password, formData.rememberMe);
     };
 
     return (
@@ -51,4 +54,6 @@ const Login = (props) => {
     );
 };
 
-export default Login;
+export default connect(null, {
+    login
+})(Login);

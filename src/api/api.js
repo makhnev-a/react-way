@@ -21,6 +21,7 @@ export const usersApi = {
         return instance.delete(`follow/${userId}`)
             .then(response => response.data)
     },
+    // auth/me
     loggin() {
         return instance.get(`auth/me`)
             .then(response => response.data)
@@ -37,4 +38,14 @@ export const usersApi = {
         return instance.put(`profile/status`, {status: status})
             .then(response => response.data)
     }
+};
+
+export const authApi = {
+    login(email, passport, rememberMe = false) {
+        debugger
+        return instance.post(`auth/login`, {email, passport, rememberMe})
+    },
+    logout() {
+        return instance.delete(`auth/login`);
+    },
 };
