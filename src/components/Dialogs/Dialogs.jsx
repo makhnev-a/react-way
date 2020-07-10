@@ -8,6 +8,7 @@ import {Textarea} from "../common/FormControls/FormControls";
 import {maxLengthCreator, requiredField} from "../../utils/validators/validators";
 
 const Dialogs = (props) => {
+    debugger
     let state = props.dialogsPage;
     let dialogsItems = state.dialogs.map(dialog => <DialogItem name={dialog.name} id={dialog.id}/>);
     let messagesItems = state.messages.map(message => <Message message={message.message}/>);
@@ -18,6 +19,7 @@ const Dialogs = (props) => {
     };
 
     if (!props.isAuth) {
+        debugger
         return <Redirect to={"/login"}/>
     }
 

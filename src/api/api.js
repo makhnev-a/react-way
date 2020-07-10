@@ -41,9 +41,8 @@ export const usersApi = {
 };
 
 export const authApi = {
-    login(email, passport, rememberMe = false) {
-        debugger
-        return instance.post(`auth/login`, {email, passport, rememberMe})
+    login(email, password, rememberMe = false) {
+        return instance.post(`auth/login`, {email, password, rememberMe})
     },
     logout() {
         return instance.delete(`auth/login`);
