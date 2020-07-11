@@ -38,7 +38,7 @@ export default authReducer;
 
 export const getLoggin = () => {
     return (dispatch) => {
-        usersApi.loggin().then((data) => {
+        return usersApi.loggin().then((data) => {
             if (data.resultCode === 0) {
                 let {id, email, login} = data.data;
                 dispatch(setAuthUserData(id, email, login, true));
