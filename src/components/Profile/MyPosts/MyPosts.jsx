@@ -5,30 +5,49 @@ import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, requiredField} from "../../../utils/validators/validators";
 import {Textarea} from "../../common/FormControls/FormControls";
 
-const MyPosts = (props) => {
-    let newPostElement = React.createRef();
+window.props = [];
 
-    let postsItems = props.posts
-        .map((post, index) =>
-            <Post
-                key={`${post.message} + ${index}`}
-                message={post.message}
-                likeCount={post.likeCount}
-            />
-        );
+class MyPosts extends React.Component {
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({a: 12});
+        }, 3000);
+    }
 
-    let onAddPost = (values) => props.addPost(values.newPostText);
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps !== this.props || nextState !== this.state;
+    }
 
-    return (
-        <div className={s.postsBlock}>
-            <h3>My posts</h3>
-            <AddNewPostFormRedux onSubmit={onAddPost}/>
-            <div className={s.posts}>
-                {postsItems}
+    render() {
+        console.log('Render');
+        window.props.push(this.props);
+
+        console.log(this.props);
+
+        let newPostElement = React.createRef();
+
+        let postsItems = this.props.posts
+            .map((post, index) =>
+                <Post
+                    key={`${post.message} + ${index}`}
+                    message={post.message}
+                    likeCount={post.likeCount}
+                />
+            );
+
+        let onAddPost = (values) => this.props.addPost(values.newPostText);
+
+        return (
+            <div className={s.postsBlock}>
+                <h3>My posts</h3>
+                <AddNewPostFormRedux onSubmit={onAddPost}/>
+                <div className={s.posts}>
+                    {postsItems}
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 const maxLength10 = maxLengthCreator(10);
 
