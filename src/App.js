@@ -11,7 +11,6 @@ import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginPage from "./components/Login/Login";
 import {connect} from "react-redux";
-import {getLoggin} from "./redux/auth.reducer";
 import {compose} from "redux";
 import {initializeApp} from "./redux/app.reducer";
 import Preloader from "./components/common/Preloader";
@@ -23,7 +22,7 @@ class App extends React.Component {
 
     render() {
         if (!this.props.initialized) {
-            return <Preloader />
+            return <Preloader/>
         }
 
         let profilePage = () =>
