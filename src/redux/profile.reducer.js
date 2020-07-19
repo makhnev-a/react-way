@@ -1,9 +1,9 @@
 import {usersApi} from "../api/api";
 
-const ADD_POST = 'ADD-POST';
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_STATUS = 'SET_STATUS';
-const DELETE_POST = 'DELETE_POST';
+const ADD_POST = 'ReactWay/profile.reducer/ADD-POST';
+const SET_USER_PROFILE = 'ReactWay/profile.reducer/SET_USER_PROFILE';
+const SET_STATUS = 'ReactWay/profile.reducer/SET_STATUS';
+const DELETE_POST = 'ReactWay/profile.reducer/DELETE_POST';
 
 const initialState = {
     posts: [
@@ -42,6 +42,7 @@ const profileReducer = (state = initialState, action) => {
 
 export default profileReducer;
 
+// Actions
 export const addPostActionCreater = (newPostText) => ({
     type: ADD_POST,
     newPostText
@@ -62,28 +63,21 @@ export const setStatus = (status) => ({
     status
 });
 
-export const getProfileUser = (userId) => {
-    return (dispatch) => {
-        usersApi.getProfile(userId).then((data) => {
-            dispatch(setUserProfile(data));
-        });
-    };
+// Thunks
+export const getProfileUser = (userId) => async (dispatch) => {
+    let data = await usersApi.getProfile(userId);
+    dispatch(setUserProfile(data));
 };
 
-export const getStatus = (userId) => {
-    return (dispatch) => {
-        usersApi.getStatus(userId).then((data) => {
-            dispatch(setStatus(data))
-        });
-    };
+export const getStatus = (userId) => async (dispatch) => {
+    let data = await usersApi.getStatus(userId);
+    dispatch(setStatus(data));
 };
 
-export const updateStatus = (status) => {
-    return (dispatch) => {
-        usersApi.updateStatus(status).then((data) => {
-            if (data.resultCode === 0) {
-                dispatch(setStatus(status))
-            }
-        });
-    };
+export const updateStatus = (status) => async (dispatch) => {
+    let data = await usersApi.updateStatus(status)
+
+    if (data.resultCode === 0) {
+        dispatch(setStatus(status))
+    }
 };
