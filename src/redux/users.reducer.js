@@ -1,4 +1,5 @@
 import {usersApi} from "../api/api";
+import {updateObjectInArray} from "../utils/object.helpers";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -20,25 +21,9 @@ const initialState = {
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
         case FOLLOW:
-            return {
-                ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: true}
-                    }
-                    return u;
-                })
-            };
+            return {...state, users: updateObjectInArray(state.users, action.userId, 'id', {followed: true})};
         case UNFOLLOW:
-            return {
-                ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: false}
-                    }
-                    return u;
-                })
-            };
+            return {...state, users: updateObjectInArray(state.users, action.userId, 'id', {followed: false})};
         case SET_USERS:
             return {...state, users: action.users}
         case SET_CURRENT_PAGE:
@@ -61,48 +46,52 @@ const usersReducer = (state = initialState, action) => {
 
 export default usersReducer;
 
+// Actions
 export const followSuccess = (userId) => ({type: FOLLOW, userId});
 export const unfollowSuccess = (userId) => ({type: UNFOLLOW, userId});
 export const setUsers = (users) => ({type: SET_USERS, users});
 export const setCurrentPage = (pageNumber) => ({type: SET_CURRENT_PAGE, pageNumber});
 export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, count: totalUsersCount});
 export const toggleFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching});
-export const toogleFollowingProgress = (isFetching, userId) => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId});
+export const toogleFollowingProgress = (isFetching, userId) => ({
+    type: TOGGLE_IS_FOLLOWING_PROGRESS,
+    isFetching,
+    userId
+});
 
+// Thunks
 export const requestUsers = (page, pageSize) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(toggleFetching(true));
         dispatch(setCurrentPage(page))
 
-        usersApi.getUsers(page, pageSize).then((data) => {
-            dispatch(toggleFetching(false));
-            dispatch(setUsers(data.items));
-            // dispatch(setTotalUsersCount(data.totalCount));
-            dispatch(setTotalUsersCount(50));
-        });
+        let data = await usersApi.getUsers(page, pageSize);
+
+        dispatch(toggleFetching(false));
+        dispatch(setUsers(data.items));
+        dispatch(setTotalUsersCount(50));
     };
 };
 
+const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
+    dispatch(toogleFollowingProgress(true, userId));
+    let data = await apiMethod(userId);
+
+    if (data.resultCode === 0) {
+        dispatch(actionCreator(userId));
+    }
+
+    dispatch(toogleFollowingProgress(false, userId));
+};
+
 export const follow = (userId) => {
-    return (dispatch) => {
-        dispatch(toogleFollowingProgress(true, userId));
-        usersApi.follow(userId).then((data) => {
-            if (data.resultCode === 0) {
-                dispatch(followSuccess(userId));
-            }
-            dispatch(toogleFollowingProgress(false, userId));
-        });
+    return async (dispatch) => {
+        followUnfollowFlow(dispatch, userId, usersApi.follow.bind(usersApi), followSuccess);
     };
 };
 
 export const unfollow = (userId) => {
-    return (dispatch) => {
-        dispatch(toogleFollowingProgress(true, userId));
-        usersApi.unfollow(userId).then((data) => {
-            if (data.resultCode === 0) {
-                dispatch(unfollowSuccess(userId));
-            }
-            dispatch(toogleFollowingProgress(false, userId));
-        });
+    return async (dispatch) => {
+        followUnfollowFlow(dispatch, userId, usersApi.unfollow.bind(usersApi), unfollowSuccess);
     };
 };
